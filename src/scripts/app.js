@@ -1,7 +1,7 @@
 import React from 'react';
 import Main from './components/main';
 
-require('../styles/base.scss'); //Yeah, require CSS!!!
+require('../styles/base.scss');
 
 
 let main = document.createElement('div');
