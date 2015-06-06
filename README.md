@@ -64,8 +64,5 @@ You can use Sass in this project, it will work with all features provided in thi
 ## [ES6 Support](https://babeljs.io/)
 The project is configured to use babel so you get access to new ES6 features out of the box.  Babel also supports JSX so you can use that in the React components you create, the project is configured to compile them into plain JS for you, again with all features intact including Hot Reload.
 
-## JQuery
-The project is also configured to use JQuery.  I use this for AJAX requests mostly.  You can easily remove it if you want to, just run `npm uninstall jquery --save-dev`.
-
 # Summary
 Copy this project if you want to create a React project with all the features you used to from Gulp/Grunt, except better and faster.

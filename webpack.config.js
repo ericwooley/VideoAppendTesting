@@ -42,8 +42,8 @@ var config = {
     new webpack.NoErrorsPlugin()
   ],
   postcss: [autoprefixer, csswring],
-  devtool: 'eval'
-  // devtool: 'sourcemap'
+  devtool: 'eval',
+  devtool: 'sourcemap'
 };
 
 module.exports = config;
