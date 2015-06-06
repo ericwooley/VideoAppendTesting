@@ -29,7 +29,6 @@
     "file-loader": "^0.8.4",
     "html-webpack-plugin": "^1.4.0",
     "image-webpack-loader": "^1.4.0",
-    "jquery": "^2.1.4",
     "postcss-loader": "^0.4.4",
     "react": "^0.13.3",
     "react-hot-loader": "^1.2.7",
@@ -42,6 +41,7 @@
   },
   "scripts": {
     "build": "NODE_ENV=production webpack -p --progress --colors --config webpack.production.config.js",
+    "openDev": "open http://localhost:8080/webpack-dev-server/ && npm run dev",
     "dev": "webpack-dev-server --progress --colors --hot --content-base dist",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf ./dist",
