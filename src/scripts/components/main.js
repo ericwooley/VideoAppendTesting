@@ -8,22 +8,34 @@ class Main extends Component {
   constructor() {
     super();
     this.state = {
+      dynamicSrc: true,
       videoUrl: ''
     };
   }
   componentDidMount() {
+    this.initializeMediaStreamer();
+  }
+  initializeMediaStreamer() {
     this.mediaStreamer = new MediaStreamer({$video: this.refs.video.getDOMNode()});
   }
   appendVideo(url) {
     return () => {
+      if(!this.state.dynamicSrc) {
+        this.initializeMediaStreamer();
+      }
+      this.setState({
+        dynamicSrc: true
+      });
       this.mediaStreamer.downloadVideo(url);
     };
   }
   setSrc(url){
     return () => {
       this.setState({
+        dynamicSrc: false,
         videoUrl: url
       });
+      this.refs.video.getDOMNode().src = url;
     };
   }
   render() {
@@ -33,7 +45,9 @@ class Main extends Component {
         <button className="vid-1-src" onClick={this.setSrc(vid1)}>SRC: Video 1</button><hr />
         <button className="vid-2" onClick={this.appendVideo(vid2)}>Video 2</button><br />
         <button className="vid-2-src" onClick={this.setSrc(vid2)}>SRC: Video 2</button><hr />
-        <video controls ref="video" src={this.state.videoUrl}/>
+        Dynamic Src: {this.state.dynamicSrc ? 'true' : 'false' }
+        <hr />
+        <video controls ref="video"/>
       </div>
     );
   }
