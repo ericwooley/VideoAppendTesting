@@ -28,7 +28,7 @@ var config = {
       test: /\.woff$|\.ttf$|\.wav$|\.mp3$/,
       loader: 'file'
     }, {
-      test: /\.jpe?g$|\.gif$|\.png$|\.svg$/,
+      test: /\.jpe?g$|\.gif$|\.png$|\.svg$|\.webm$/,
       loader: 'file'
       // loaders: [
         // 'url?limit=8192&hash=sha512&digest=hex&name=[hash].[ext]',
