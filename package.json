@@ -45,7 +45,8 @@
     "dev": "webpack-dev-server --progress --colors --hot --content-base dist --port 8085",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf ./dist",
-    "start": "node server.js"
+    "start": "node server.js",
+    "webcam-record": "ffmpeg -f avfoundation -pix_fmt uyvy422 -i \"0\" -vf scale=640:360 -segment_wrap 20 -f segment test-%d.webm"
   },
   "author": "Mark Vilrokx <mvilrokx@gmail.com>",
   "license": "MIT",

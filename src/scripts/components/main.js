@@ -83,7 +83,50 @@ Input #0, matroska,webm, from 'project-fi.webm':
   Duration: 00:01:00.61, start: 0.000000, bitrate: 222 kb/s
     Stream #0:0: Video: vp8, yuv420p, 640x360, SAR 1:1 DAR 16:9, 24 fps, 24 tbr, 1k tbn, 1k tbc (default)
     Stream #0:1: Audio: vorbis, 44100 Hz, stereo, fltp (default)`,
-  dataUrl: require('../../images/project-fi.webm')}
+  dataUrl: require('../../images/project-fi.webm')},
+
+
+  {url: '../../images/test-0.webm', probe: `ffprobe test.webm                                                                                                                          ~/Projects/video-playground
+ffprobe version 2.6.2 Copyright (c) 2007-2015 the FFmpeg developers
+  built with Apple LLVM version 6.1.0 (clang-602.0.49) (based on LLVM 3.6.0svn)
+  configuration: --prefix=/usr/local/Cellar/ffmpeg/2.6.2 --enable-shared --enable-pthreads --enable-gpl --enable-version3 --enable-hardcoded-tables --enable-avresample --cc=clang --host-cflags= --host-ldflags= --enable-libx264 --enable-libmp3lame --enable-libvo-aacenc --enable-libxvid --enable-libvorbis --enable-libvpx --enable-vda
+  libavutil      54. 20.100 / 54. 20.100
+  libavcodec     56. 26.100 / 56. 26.100
+  libavformat    56. 25.101 / 56. 25.101
+  libavdevice    56.  4.100 / 56.  4.100
+  libavfilter     5. 11.102 /  5. 11.102
+  libavresample   2.  1.  0 /  2.  1.  0
+  libswscale      3.  1.101 /  3.  1.101
+  libswresample   1.  1.100 /  1.  1.100
+  libpostproc    53.  3.100 / 53.  3.100
+Input #0, matroska,webm, from 'test.webm':
+  Metadata:
+    encoder         : Lavf56.25.101
+  Duration: 00:00:05.79, start: 0.000000, bitrate: 86 kb/s
+    Stream #0:0: Video: vp9, yuv420p, 640x360, SAR 1:1 DAR 16:9, 24 fps, 24 tbr, 1k tbn, 1k tbc (default)`,
+dataUrl: require('../../images/test-0.webm')},
+
+
+  {url: '../../images/test-1.webm', probe: `ffprobe test2.webm                                                                                                                   ~/Projects/video-playground
+ffprobe version 2.6.2 Copyright (c) 2007-2015 the FFmpeg developers
+  built with Apple LLVM version 6.1.0 (clang-602.0.49) (based on LLVM 3.6.0svn)
+  configuration: --prefix=/usr/local/Cellar/ffmpeg/2.6.2 --enable-shared --enable-pthreads --enable-gpl --enable-version3 --enable-hardcoded-tables --enable-avresample --cc=clang --host-cflags= --host-ldflags= --enable-libx264 --enable-libmp3lame --enable-libvo-aacenc --enable-libxvid --enable-libvorbis --enable-libvpx --enable-vda
+  libavutil      54. 20.100 / 54. 20.100
+  libavcodec     56. 26.100 / 56. 26.100
+  libavformat    56. 25.101 / 56. 25.101
+  libavdevice    56.  4.100 / 56.  4.100
+  libavfilter     5. 11.102 /  5. 11.102
+  libavresample   2.  1.  0 /  2.  1.  0
+  libswscale      3.  1.101 /  3.  1.101
+  libswresample   1.  1.100 /  1.  1.100
+  libpostproc    53.  3.100 / 53.  3.100
+Input #0, matroska,webm, from 'test2.webm':
+  Metadata:
+    encoder         : Lavf56.25.101
+  Duration: 00:00:10.96, start: 0.000000, bitrate: 99 kb/s
+    Stream #0:0: Video: vp9, yuv420p, 640x360, SAR 1:1 DAR 16:9, 24 fps, 24 tbr, 1k tbn, 1k tbc (default)`,
+dataUrl: require('../../images/test-1.webm')}
+
 ];
 class Main extends Component {
   constructor() {
@@ -97,14 +140,23 @@ class Main extends Component {
     this.initializeMediaStreamer();
   }
   initializeMediaStreamer() {
-    this.mediaStreamer = new MediaStreamer({$video: this.refs.video.getDOMNode()});
+    this.mediaStreamer = new MediaStreamer({
+      $video: this.refs.video.getDOMNode(),
+      onReady: () => {
+        this.setState({
+          srcReady: true
+        });
+      }
+    });
   }
   resetVideo() {
     this.state = {
       dynamicSrc: false,
-      videoUrl: ''
+      videoUrl: '',
+      srcReady: false
     };
     this.refs.video.getDOMNode().src = '';
+    this.initializeMediaStreamer();
   }
   renderButtons() {
     const buttonStyle = {
@@ -137,9 +189,11 @@ class Main extends Component {
   }
   setSrc(url){
     return () => {
+      this.mediaStreamer = null;
       this.setState({
         dynamicSrc: false,
-        videoUrl: url
+        videoUrl: url,
+        srcReady: false
       });
       this.refs.video.getDOMNode().src = url;
     };
@@ -148,7 +202,8 @@ class Main extends Component {
     return (
       <div className="main" >
         <div style={{float: 'left', width: '50%', overflow: 'scroll'}}>
-          {this.renderButtons()}
+
+          {this.state.srcReady ? this.renderButtons() : ''}
           Dynamic Src: {this.state.dynamicSrc ? 'true' : 'false' }
           <hr />
         </div>
